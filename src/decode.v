@@ -1,8 +1,8 @@
 module twoFourDecode
 (
-  input [1:0] i,
+  input [1:0] sel,
 
-  output wire [3:0] enable
+  output [3:0] enable
 );
 
   wire [1:0] notI;

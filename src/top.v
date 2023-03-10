@@ -1,5 +1,9 @@
 `default_nettype none
 
+`include "alu.v"
+`include "decode.v"
+`include "mux.v"
+
 module HiddenRoom_HiddenCPU
 (
   input [7:0] in,
@@ -16,6 +20,15 @@ module HiddenRoom_HiddenCPU
   wire [1:0] reg0Addr;
   wire [1:0] reg1Addr;
 
+  wire [7:0] dIn0;
+  wire [7:0] dIn1;
+
+  fourOneMux reg0Mux(.sel(reg0Addr), .dIn0(r0), .dIn1(r1), .dIn2(r2), .dIn3(r3), .dOut(dIn0))
+  fourOneMux reg1Mux(.sel(reg1Addr), .dIn0(r0), .dIn1(r1), .dIn2(r2), .dIn3(r3), .dOut(dIn1))
+
+  wire [7:0] aluRes;
+  wire [7:0] writeBackEnable;
+
   reg [7:0] pc;
 
   reg [7:0] r0;
@@ -23,28 +36,55 @@ module HiddenRoom_HiddenCPU
   reg [7:0] r2;
   reg [7:0] r3;
 
-  reg carryFlag;
-  reg borrowFlag;
+  wire carryFlag;
+  wire borrowFlag;
+
+  wire bcf;
+  wire bbf;
+  wire buc;
+
+  wire toggleOut;
+
+  reg selOut;
+
+  alu topAlu(.opcode(opcode), .addrs(in[4:7]), .dIn0(dIn0), .dIn1(dIn1), .carry(carryFlag), .borrow(borrowFlag), .bcf(bcf), .bbf(bbf), .buc(buc), .toggleOut(toggleOut), .dOut(aluRes));
+  twoFourDecode writeBackAddrDecoder(.sel(reg0Addr), .enable(writeBackEnable));
 
   always @(posedge clk)
   begin
+    if(rst)
+    begin
+      pc = 8'b00000000;
+
+      r0 = 8'b00000000;
+      r1 = 8'b00000001;
+      r2 = 8'b00000010;
+      r3 = 8'b00000011;
+    end 
+
     opcode = in[2:3];
     reg0Addr = in[4:5];
     reg1Addr = in[6:7];
 
-    pc = pc + pcInc;
+    if(toggleOut)
+    begin
+      selOut = ~notSelOut;
+    end
+    else if((carryFlag & bcf) | (borrowFlag & bbf) | buc)
+    begin
+      pc = pc + r3;
+    end
+    else
+    begin
+      pc = pc + 1;
+    end
+
+    r0 <= aluRes & {8{writeBackEnable[0]}};
+    r1 <= aluRes & {8{writeBackEnable[1]}};
+    r2 <= aluRes & {8{writeBackEnable[2]}};
+    r3 <= aluRes & {8{writeBackEnable[3]}};
   end 
 
-  always @(posedge rst)
-  begin
-    pc = 8'b00000000;
-
-    r0 = 8'b00000000;
-    r1 = 8'b00000001;
-    r2 = 8'b00000010;
-    r3 = 8'b00000011;
-  end
-
-  assign out = r3; /* to see cpu output */
+  twoOneMux outputMux(.sel(selOut), .dIn0(pc), .dIn1(r3), .dOut(out));
 
 endmodule

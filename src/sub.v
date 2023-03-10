@@ -58,6 +58,6 @@ module subEight
   fullSubtractor subtractor6(.a(d0[6]), .b(d1[6]), .bIn(borrows[5]), .diff(resTmp[6]), .bOut(borrows[6]));
   fullSubtractor subtractor7(.a(d0[7]), .b(d1[7]), .bIn(borrows[6]), .diff(resTmp[7]), .bOut(bOut));
 
-  assign res = resTmp & {8{enable}};
+  assign dOut = resTmp & {8{enable}};
   
 endmodule

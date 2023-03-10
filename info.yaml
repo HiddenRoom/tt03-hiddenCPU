@@ -9,6 +9,7 @@ project:
     - top.v
     - decode.v
     - mux.v
+    - ALU.v
     - add.v
     - sub.v
     - xor.v

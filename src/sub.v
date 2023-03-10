@@ -40,8 +40,8 @@ endmodule
 
 module subEight
 (
-  input [7:0] d0,
-  input [7:0] d1,
+  input [7:0] dIn0,
+  input [7:0] dIn1,
   input enable,
 
   output bOut,

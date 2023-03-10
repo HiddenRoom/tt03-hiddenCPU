@@ -9,8 +9,8 @@ TOPLEVEL_LANG ?= verilog
 ifneq ($(GATES),yes)
 
 # this is the only part you should need to modify:
-VERILOG_SOURCES += $(PWD)/tb.v $(PWD)/counter.v $(PWD)/decoder.v
-
+VERILOG_SOURCES += $(PWD)/tb.v $(PWD)/top.v $(PWD)/decode.v $(PWD)/mux.v $(PWD)/add.v $(PWD)/ALU.v $(PWD)/sub.v $(PWD)/xor.v $(PWD)/movAndBranch.v
+o
 else
 
 # gate level simulation requires some extra setup, you shouldn't need to touch this

@@ -1,3 +1,6 @@
+`ifndef __DECODE__
+`define __DECODE__
+
 module twoFourDecode
 (
   input [1:0] sel,
@@ -16,3 +19,5 @@ module twoFourDecode
   assign enable[3] = sel[1] & sel[0];
 
 endmodule
+
+`endif

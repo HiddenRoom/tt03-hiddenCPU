@@ -1,3 +1,6 @@
+`ifndef __MUX__
+`define __MUX__
+
 module twoOneMux
 (
   input sel,
@@ -54,3 +57,18 @@ module fourOneMux
   assign dOut = outTmp[0] | outTmp[1] | outTmp[2] | outTmp[3];
 
 endmodule
+
+module xorEight
+(
+  input [7:0] dIn0,
+  input [7:0] dIn1,
+  input enable,
+
+  output [7:0] dOut
+);
+
+  assign dOut = (dIn0 ^ dIn1) & {8{enable}};
+
+endmodule
+
+`endif

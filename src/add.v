@@ -1,3 +1,6 @@
+`ifndef __ADD__
+`define __ADD__
+
 module halfAdder
 (
   input a,
@@ -59,3 +62,5 @@ module addEight
   assign cOut = cOutTmp & enable;
 
 endmodule
+
+`endif

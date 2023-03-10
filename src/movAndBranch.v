@@ -1,3 +1,6 @@
+`ifndef __MOV__
+`define __MOV__
+
 /* if given two different register addresses it will set the the result
 * operand reg equal to the non result operand reg. if it receives the same
 * address for both what would otherwise be a nop is repurposed for a branch as
@@ -51,3 +54,5 @@ module movAndBranch
   assign dOut = dIn0 & {8{enable}};
 
 endmodule
+
+`endif

@@ -1,3 +1,6 @@
+`ifndef __ALU__
+`define __ALU__
+
 `include "add.v"
 `include "sub.v"
 `include "xor.v"
@@ -51,3 +54,5 @@ module alu
   assign dOut = addRes | subRes | xorRes | movRes;
 
 endmodule
+
+`endif

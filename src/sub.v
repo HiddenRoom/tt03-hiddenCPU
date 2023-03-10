@@ -1,3 +1,6 @@
+`ifndef __SUB__
+`define __SUB__
+
 module halfSubtractor
 (
   input a,
@@ -61,3 +64,5 @@ module subEight
   assign dOut = resTmp & {8{enable}};
   
 endmodule
+
+`endif

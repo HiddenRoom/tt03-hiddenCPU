@@ -1,3 +1,6 @@
+`ifndef __XOR__
+`define __XOR__
+
 module xorEight
 (
   input [7:0] dIn0,
@@ -10,3 +13,5 @@ module xorEight
   assign dOut = (dIn0 ^ dIn1) & {8{enable}};
 
 endmodule
+
+`endif

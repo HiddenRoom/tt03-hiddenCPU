@@ -1,6 +1,6 @@
 `default_nettype none
 
-`include "alu.v"
+`include "ALU.v"
 `include "decode.v"
 `include "mux.v"
 

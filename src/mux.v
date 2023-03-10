@@ -20,7 +20,7 @@ module twoOneMux
   assign outTmp0 = dIn0 & notSelExpanded;
   assign outTmp1 = dIn1 & selExpanded;
 
-  assign dOut = outTmp0 | OutTmp1;
+  assign dOut = outTmp0 | outTmp1;
 
 endmodule
 

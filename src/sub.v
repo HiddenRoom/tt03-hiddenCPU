@@ -42,7 +42,7 @@ module subEight
   input enable,
 
   output bOut,
-  output [7:0] res
+  output [7:0] dOut
 );  
 
   wire [7:0] resTmp;

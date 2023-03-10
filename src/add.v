@@ -55,7 +55,7 @@ module addEight
   fullAdder adder6(.a(dIn0[6]), .b(dIn1[6]), .cIn(carries[5]), .sum(resTmp[6]), .cOut(carries[6]));
   fullAdder adder7(.a(dIn0[7]), .b(dIn1[7]), .cIn(carries[6]), .sum(resTmp[7]), .cOut(cOutTmp));
 
-  assign res = resTmp & {8{enable}};
+  assign dOut = resTmp & {8{enable}};
   assign cOut = cOutTmp & enable;
 
 endmodule

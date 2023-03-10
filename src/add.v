@@ -27,7 +27,7 @@ module fullAdder
   halfAdder halfAdderAB(.a(a), .b(b), .sum(sumAB), .carry(carryAB));
   halfAdder halfAdderCInSumAB(.a(cIn), .b(sumAB), .sum(sum), .carry(carryCInSumAB));
 
-  or(cOut, carryAB, carryCinSumAB);
+  or(cOut, carryAB, carryCInSumAB);
 
 endmodule
 

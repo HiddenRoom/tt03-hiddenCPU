@@ -16,9 +16,9 @@ module HiddenRoom_HiddenCPU
   assign clk = in[0];
   assign rst = in[1];
 
-  wire [1:0] opcode;
-  wire [1:0] reg0Addr;
-  wire [1:0] reg1Addr;
+  reg [1:0] opcode;
+  reg [1:0] reg0Addr;
+  reg [1:0] reg1Addr;
 
   wire [7:0] dIn0;
   wire [7:0] dIn1;

@@ -54,29 +54,31 @@ module HiddenRoom_HiddenCPU
   begin
     if(rst)
     begin
-      pc = 8'b00000000;
+      pc <= 8'b00000000;
 
-      r0 = 8'b00000000;
-      r1 = 8'b00000001;
-      r2 = 8'b00000010;
-      r3 = 8'b00000011;
+      selOut <= 1'b0;
+
+      r0 <= 8'b00000000;
+      r1 <= 8'b00000001;
+      r2 <= 8'b00000010;
+      r3 <= 8'b00000011;
     end 
 
-    opcode = in[7:6];
-    reg0Addr = in[5:4];
-    reg1Addr = in[3:2];
+    opcode <= in[7:6];
+    reg0Addr <= in[5:4];
+    reg1Addr <= in[3:2];
 
     if(toggleOut)
     begin
-      selOut = selOut;
+      selOut <= !selOut;
     end
     else if((carryFlag & bcf) | (borrowFlag & bbf) | buc)
     begin
-      pc = pc + r3;
+      pc <= pc + r3;
     end
     else
     begin
-      pc = pc + 1;
+      pc <= pc + 1;
     end
 
     r0 <= aluRes & {8{writeBackEnable[0]}};
@@ -85,10 +87,6 @@ module HiddenRoom_HiddenCPU
     r3 <= aluRes & {8{writeBackEnable[3]}};
   end 
 
-  wire [7:0] outBuf;
-
-  twoOneMux outputMux(.sel(selOut), .dIn0(pc), .dIn1(r3), .dOut(outBuf));
-
-  assign out = outBuf;
+  twoOneMux outputMux(.sel(selOut), .dIn0(pc), .dIn1(r3), .dOut(out));
 
 endmodule

@@ -85,6 +85,10 @@ module HiddenRoom_HiddenCPU
     r3 <= aluRes & {8{writeBackEnable[3]}};
   end 
 
-  twoOneMux outputMux(.sel(selOut), .dIn0(pc), .dIn1(r3), .dOut(out));
+  wire [7:0] outBuf;
+
+  twoOneMux outputMux(.sel(selOut), .dIn0(pc), .dIn1(r3), .dOut(outBuf));
+
+  assign out = outBuf;
 
 endmodule

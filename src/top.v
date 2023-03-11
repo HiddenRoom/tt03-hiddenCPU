@@ -47,7 +47,7 @@ module HiddenRoom_HiddenCPU
 
   reg selOut;
 
-  alu topAlu(.opcode(opcode), .addrs(in[4:7]), .dIn0(dIn0), .dIn1(dIn1), .carry(carryFlag), .borrow(borrowFlag), .bcf(bcf), .bbf(bbf), .buc(buc), .toggleOut(toggleOut), .dOut(aluRes));
+  alu topAlu(.opcode(opcode), .addrs(in[5:2]), .dIn0(dIn0), .dIn1(dIn1), .carry(carryFlag), .borrow(borrowFlag), .bcf(bcf), .bbf(bbf), .buc(buc), .toggleOut(toggleOut), .dOut(aluRes));
   twoFourDecode writeBackAddrDecoder(.sel(reg0Addr), .enable(writeBackEnable));
 
   always @(posedge clk)
@@ -62,9 +62,9 @@ module HiddenRoom_HiddenCPU
       r3 = 8'b00000011;
     end 
 
-    opcode = in[2:3];
-    reg0Addr = in[4:5];
-    reg1Addr = in[6:7];
+    opcode = in[7:6];
+    reg0Addr = in[5:4];
+    reg1Addr = in[3:2];
 
     if(toggleOut)
     begin

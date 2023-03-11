@@ -27,7 +27,7 @@ module HiddenRoom_HiddenCPU
   fourOneMux reg1Mux(.sel(reg1Addr), .dIn0(r0), .dIn1(r1), .dIn2(r2), .dIn3(r3), .dOut(dIn1));
 
   wire [7:0] aluRes;
-  wire [7:0] writeBackEnable;
+  wire [3:0] writeBackEnable;
 
   reg [7:0] pc;
 

@@ -70,7 +70,7 @@ module HiddenRoom_HiddenCPU
 
     if(toggleOut)
     begin
-      selOut <= !selOut;
+      selOut <= ~selOut;
     end
     else if((carryFlag & bcf) | (borrowFlag & bbf) | buc)
     begin

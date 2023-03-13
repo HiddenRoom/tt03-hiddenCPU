@@ -6,15 +6,15 @@
 
 module HiddenRoom_HiddenCPU
 (
-  input [7:0] in,
+  input [7:0] io_in,
 
-  output [7:0] out
+  output [7:0] io_out
 );
 
   wire clk, rst;
 
-  assign clk = in[0];
-  assign rst = in[1];
+  assign clk = io_in[0];
+  assign rst = io_in[1];
 
   reg [1:0] opcode;
   reg [1:0] reg0Addr;
@@ -47,7 +47,7 @@ module HiddenRoom_HiddenCPU
 
   reg selOut;
 
-  alu topAlu(.opcode(opcode), .addrs(in[5:2]), .dIn0(dIn0), .dIn1(dIn1), .carry(carryFlag), .borrow(borrowFlag), .bcf(bcf), .bbf(bbf), .buc(buc), .toggleOut(toggleOut), .dOut(aluRes));
+  alu topAlu(.opcode(opcode), .addrs(io_in[5:2]), .dIn0(dIn0), .dIn1(dIn1), .carry(carryFlag), .borrow(borrowFlag), .bcf(bcf), .bbf(bbf), .buc(buc), .toggleOut(toggleOut), .dOut(aluRes));
   twoFourDecode writeBackAddrDecoder(.sel(reg0Addr), .enable(writeBackEnable));
 
   always @(posedge clk)
@@ -64,9 +64,9 @@ module HiddenRoom_HiddenCPU
       r3 <= 8'b00000011;
     end 
 
-    opcode <= in[7:6];
-    reg0Addr <= in[5:4];
-    reg1Addr <= in[3:2];
+    opcode <= io_in[7:6];
+    reg0Addr <= io_in[5:4];
+    reg1Addr <= io_in[3:2];
 
     if(toggleOut)
     begin
@@ -87,6 +87,6 @@ module HiddenRoom_HiddenCPU
     r3 <= aluRes & {8{writeBackEnable[3]}};
   end 
 
-  twoOneMux outputMux(.sel(selOut), .dIn0(pc), .dIn1(r3), .dOut(out));
+  twoOneMux outputMux(.sel(selOut), .dIn0(pc), .dIn1(r3), .dOut(io_out));
 
 endmodule

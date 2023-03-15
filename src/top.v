@@ -7,7 +7,6 @@
 module HiddenRoom_HiddenCPU
 (
   input [7:0] io_in,
-
   output [7:0] io_out
 );
 
@@ -87,6 +86,6 @@ module HiddenRoom_HiddenCPU
     r3 <= aluRes & {8{writeBackEnable[3]}};
   end 
 
-  twoOneMux outputMux(.sel(selOut), .dIn0(pc), .dIn1(r3), .dOut(io_out));
+  twoOneMux outputMux(.sel(selOut), .dIn0(r3), .dIn1(pc), .dOut(io_out));
 
 endmodule

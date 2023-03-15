@@ -48,10 +48,10 @@ module movAndBranch
 
   twoFourDecode flagDecoder(.sel(addrs[1:0]), .enable(flagEnable));
 
-  and(bcf, addrsEqual, flagEnable[0]);
-  and(bbf, addrsEqual, flagEnable[1]);
-  and(buc, addrsEqual, flagEnable[2]);
-  and(toggleOut, addrsEqual, flagEnable[3]);
+  and(bcf, addrsEqual, flagEnable[0] & enable);
+  and(bbf, addrsEqual, flagEnable[1] & enable);
+  and(buc, addrsEqual, flagEnable[2] & enable);
+  and(toggleOut, addrsEqual, flagEnable[3] & enable);
 
   assign dOut = dIn0 & {8{enable}};
 

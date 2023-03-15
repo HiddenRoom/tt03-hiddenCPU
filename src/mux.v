@@ -50,8 +50,8 @@ module fourOneMux
   assign notSelExpanded[1] = ~selExpanded[1];
 
   assign outTmp[0] = dIn0 & notSelExpanded[0] & notSelExpanded[1];
-  assign outTmp[1] = dIn1 & notSelExpanded[0] & selExpanded[1];
-  assign outTmp[2] = dIn2 & selExpanded[0] & notSelExpanded[1];
+  assign outTmp[2] = dIn1 & selExpanded[0] & notSelExpanded[1];
+  assign outTmp[1] = dIn2 & notSelExpanded[0] & selExpanded[1];
   assign outTmp[3] = dIn3 & selExpanded[0] & selExpanded[1];
 
   assign dOut = outTmp[0] | outTmp[1] | outTmp[2] | outTmp[3];

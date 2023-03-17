@@ -55,7 +55,7 @@ module HiddenRoom_HiddenCPU
     begin
       pc <= 8'b00000000;
 
-      selOut <= 1'b0;
+      selOut <= 1'b1;
 
       r0 <= 8'b00000000;
       r1 <= 8'b00000001;
@@ -68,16 +68,17 @@ module HiddenRoom_HiddenCPU
       reg0Addr <= io_in[5:4];
       reg1Addr <= io_in[3:2];
 
-      if(toggleOut)
-      begin
-        selOut <= ~selOut;
-      end
-      else if((carryFlag & bcf) | (borrowFlag & bbf) | buc)
+      if((carryFlag & bcf) | (borrowFlag & bbf) | buc)
       begin
         pc <= pc + r3;
       end
       else
       begin
+        if(toggleOut)
+        begin
+          selOut <= ~selOut;
+        end
+
         pc <= pc + 1;
       end
 
@@ -88,6 +89,7 @@ module HiddenRoom_HiddenCPU
     end
   end 
 
-  twoOneMux outputMux(.sel(selOut), .dIn0(pc), .dIn1(r3), .dOut(io_out));
+  //twoOneMux outputMux(.sel(selOut), .dIn0(pc), .dIn1(r3), .dOut(io_out));
+  assign io_out = {reg0Addr, 6'b111111};
 
 endmodule

@@ -89,7 +89,6 @@ module HiddenRoom_HiddenCPU
     end
   end 
 
-  //twoOneMux outputMux(.sel(selOut), .dIn0(pc), .dIn1(r3), .dOut(io_out));
-  assign io_out = {reg0Addr, 6'b111111};
+  twoOneMux outputMux(.sel(selOut), .dIn0(pc), .dIn1(r3), .dOut(io_out));
 
 endmodule

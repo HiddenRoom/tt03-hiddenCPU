@@ -11,17 +11,12 @@ async def test_my_design(dut):
     dut.rst.value = 1;
     await ClockCycles(dut.clk, 1);
     dut.rst.value = 0;
-    await ClockCycles(dut.clk, 5);
-    dut._log.info(dut.outBus.value);
-    #assert dut.outBus.value == 0b00000100; # outputting pc 5 cycles after reset so it should be 5
-    dut.rst.value = 1;
-    await ClockCycles(dut.clk, 1);
-    dut.rst.value = 0;
-    dut.instruction.value = 0b111111; # special case nop mov switches output from pc to r3
+    dut.instruction.value = 0b001101;
     await ClockCycles(dut.clk, 1);
     dut._log.info(dut.outBus.value);
-    dut.instruction.value = 0b111110; # mov r3, r2 
+    dut.instruction.value = 0b001110;
     await ClockCycles(dut.clk, 1);
     dut._log.info(dut.outBus.value);
-    #assert dut.outBus.value == 0b00000010; # r2 should be 0b00000010 after reset 
-    await ClockCycles(dut.clk, 1);
+    await RisingEdge(dut.clk);
+    dut._log.info(dut.outBus.value);
+    assert dut.outBus.value == 0b00000110; # r1 should be 0b00000001 after reset 

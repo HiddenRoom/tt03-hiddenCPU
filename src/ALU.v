@@ -49,7 +49,7 @@ module alu
   addEight aluAdd(.dIn0(addIn0), .dIn1(addIn1), .enable(enable[0]), .cOut(carry), .dOut(addRes));
   subEight aluSub(.dIn0(subIn0), .dIn1(subIn1), .enable(enable[1]), .bOut(borrow), .dOut(subRes));
   xorEight aluXor(.dIn0(xorIn0), .dIn1(xorIn1), .enable(enable[2]), .dOut(xorRes));
-  movAndBranch aluMovAndBranch(.dIn0(dIn0), .addrs(addrs), .enable(enable[3]), .bcf(bcf), .bbf(bbf), .buc(buc), .toggleOut(toggleOut), .dOut(movRes));
+  movAndBranch aluMovAndBranch(.dIn0(dIn1), .addrs(addrs), .enable(enable[3]), .bcf(bcf), .bbf(bbf), .buc(buc), .toggleOut(toggleOut), .dOut(movRes));
 
   assign dOut = addRes | subRes | xorRes | movRes;
 

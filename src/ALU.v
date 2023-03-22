@@ -16,9 +16,12 @@ module alu
   output carry,
   output borrow,
 
+  output carryEnable,
+
   output bcf,
-  output bbf,
-  output buc,
+
+  output memWrite,
+  output memRead,
 
   output toggleOut,
 
@@ -41,15 +44,17 @@ module alu
 
   twoFourDecode opcodeDecoder(.sel(opcode), .enable(enable));
 
-  assign {addIn0, addIn1} = {dIn0, dIn1} & {16{enable[0]}};
-  assign {subIn0, subIn1} = {dIn0, dIn1} & {16{enable[1]}};
-  assign {xorIn0, xorIn1} = {dIn0, dIn1} & {16{enable[2]}};
-  assign movIn0 = dIn0 & {8{enable[3]}};
+  assign {addIn0, addIn1} = {dIn0, dIn1};
+  assign {subIn0, subIn1} = {dIn0, dIn1};
+  assign {xorIn0, xorIn1} = {dIn0, dIn1};
+  assign movIn0 = dIn1;
+
+  or(carryEnable, enable[0], enable[1]);
 
   addEight aluAdd(.dIn0(addIn0), .dIn1(addIn1), .enable(enable[0]), .cOut(carry), .dOut(addRes));
   subEight aluSub(.dIn0(subIn0), .dIn1(subIn1), .enable(enable[1]), .bOut(borrow), .dOut(subRes));
   xorEight aluXor(.dIn0(xorIn0), .dIn1(xorIn1), .enable(enable[2]), .dOut(xorRes));
-  movAndBranch aluMovAndBranch(.dIn0(dIn1), .addrs(addrs), .enable(enable[3]), .bcf(bcf), .bbf(bbf), .buc(buc), .toggleOut(toggleOut), .dOut(movRes));
+  movAndBranch aluMovAndBranch(.dIn0(movIn0), .addrs(addrs), .enable(enable[3]), .bcf(bcf), .memWrite(memWrite), .memRead(memRead), .toggleOut(toggleOut), .dOut(movRes));
 
   assign dOut = addRes | subRes | xorRes | movRes;
 

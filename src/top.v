@@ -1,6 +1,7 @@
 `default_nettype none
 
 `include "ALU.v"
+`include "add.v"
 `include "decode.v"
 `include "mux.v"
 
@@ -10,10 +11,14 @@ module HiddenRoom_HiddenCPU
   output [7:0] io_out
 );
 
+  integer i;
+
   wire clk, rst;
 
   assign clk = io_in[0];
   assign rst = io_in[1];
+
+  reg [7:0] internalRAM [0:11];
 
   wire [7:0] dIn0;
   wire [7:0] dIn1;
@@ -22,6 +27,8 @@ module HiddenRoom_HiddenCPU
   wire [3:0] writeBackEnable;
 
   reg [7:0] pc;
+  wire [7:0] pcOneInc;
+  wire [7:0] pcR3Inc;
 
   wire [7:0] r0Buf;
   wire [7:0] r1Buf;
@@ -33,12 +40,21 @@ module HiddenRoom_HiddenCPU
   reg [7:0] r2;
   reg [7:0] r3;
 
-  wire carryFlag;
-  wire borrowFlag;
+  wire carryEnable;
+
+  reg carryFlag;
+
+  wire cOutALU;
+  wire bOutALU;
+
+  wire [1:0] dummyVal;
+
+  wire carry;
 
   wire bcf;
-  wire bbf;
-  wire buc;
+
+  wire memWrite;
+  wire memRead;
 
   wire toggleOut;
 
@@ -47,8 +63,13 @@ module HiddenRoom_HiddenCPU
   fourOneMux reg0Mux(.sel(io_in[5:4]), .dIn0(r0), .dIn1(r1), .dIn2(r2), .dIn3(r3), .dOut(dIn0));
   fourOneMux reg1Mux(.sel(io_in[3:2]), .dIn0(r0), .dIn1(r1), .dIn2(r2), .dIn3(r3), .dOut(dIn1));
 
-  alu topAlu(.opcode(io_in[7:6]), .addrs({io_in[5:4], io_in[3:2]}), .dIn0(dIn0), .dIn1(dIn1), .carry(carryFlag), .borrow(borrowFlag), .bcf(bcf), .bbf(bbf), .buc(buc), .toggleOut(toggleOut), .dOut(aluRes));
+  or(carry, cOutALU, bOutALU);
+
+  alu topAlu(.opcode(io_in[7:6]), .addrs({io_in[5:4], io_in[3:2]}), .dIn0(dIn0), .dIn1(dIn1), .carry(cOutALU), .borrow(bOutALU), .carryEnable(carryEnable), .memWrite(memWrite), .memRead(memRead), .toggleOut(toggleOut), .dOut(aluRes));
   twoFourDecode writeBackAddrDecoder(.sel(io_in[5:4]), .enable(writeBackEnable));
+
+  addEight pcOneIncAdder(.dIn0(pc), .dIn1(8'b00000001), .enable(1'b1), .cOut(dummyVal[0]), .dOut(pcOneInc));
+  addEight pcR3IncAdder(.dIn0(pc), .dIn1(r3), .enable(1'b1), .cOut(dummyVal[1]), .dOut(pcR3Inc));
 
   twoOneMux r0Mux(.sel(writeBackEnable[0]), .dIn0(r0), .dIn1(aluRes), .dOut(r0Buf));
   twoOneMux r1Mux(.sel(writeBackEnable[1]), .dIn0(r1), .dIn1(aluRes), .dOut(r1Buf));
@@ -72,12 +93,29 @@ module HiddenRoom_HiddenCPU
       r1 <= 8'b00000001;
       r2 <= 8'b00000010;
       r3 <= 8'b00000011;
+
+      for(i = 0; i < 4096; i = i + 1)
+      begin
+        internalRAM[i] <= 8'b00000000;
+      end
     end 
     else
     begin
-      if((carryFlag & bcf) | (borrowFlag & bbf) | buc)
+      if(carryEnable)
       begin
-        pc <= pc + r3;
+        carryFlag <= carry;
+      end
+      else if(memWrite)
+      begin
+        internalRAM[{r0, r1, r2}] <= r3;
+      end
+      else if(memRead)
+      begin
+        r3 <= internalRAM[{r0, r1, r2}];
+      end
+      else if((carryFlag & bcf))
+      begin
+        pc <= pcR3Inc;
       end
       else
       begin
@@ -85,9 +123,9 @@ module HiddenRoom_HiddenCPU
         begin
           selOut <= ~selOut;
         end
-
-        pc <= pc + 1;
       end
+      
+      pc <= pcOneInc;
     end
   end 
 

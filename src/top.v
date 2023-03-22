@@ -65,7 +65,7 @@ module HiddenRoom_HiddenCPU
 
   or(carry, cOutALU, bOutALU);
 
-  alu topAlu(.opcode(io_in[7:6]), .addrs({io_in[5:4], io_in[3:2]}), .dIn0(dIn0), .dIn1(dIn1), .carry(cOutALU), .borrow(bOutALU), .carryEnable(carryEnable), .memWrite(memWrite), .memRead(memRead), .toggleOut(toggleOut), .dOut(aluRes));
+  alu topAlu(.opcode(io_in[7:6]), .addrs(io_in[5:2]), .dIn0(dIn0), .dIn1(dIn1), .carry(cOutALU), .borrow(bOutALU), .carryEnable(carryEnable), .bcf(bcf), .memWrite(memWrite), .memRead(memRead), .toggleOut(toggleOut), .dOut(aluRes));
   twoFourDecode writeBackAddrDecoder(.sel(io_in[5:4]), .enable(writeBackEnable));
 
   addEight pcOneIncAdder(.dIn0(pc), .dIn1(8'b00000001), .enable(1'b1), .cOut(dummyVal[0]), .dOut(pcOneInc));

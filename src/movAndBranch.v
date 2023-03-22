@@ -30,8 +30,9 @@ module movAndBranch
 
 
   output bcf,
-  output bbf,
-  output buc,
+
+  output memWrite,
+  output memRead,
 
   output toggleOut,
 
@@ -49,8 +50,8 @@ module movAndBranch
   twoFourDecode flagDecoder(.sel(addrs[1:0]), .enable(flagEnable));
 
   and(bcf, addrsEqual, flagEnable[0] & enable);
-  and(bbf, addrsEqual, flagEnable[1] & enable);
-  and(buc, addrsEqual, flagEnable[2] & enable);
+  and(memWrite, addrsEqual, flagEnable[1] & enable);
+  and(memRead, addrsEqual, flagEnable[2] & enable);
   and(toggleOut, addrsEqual, flagEnable[3] & enable);
 
   assign dOut = dIn0 & {8{enable}};

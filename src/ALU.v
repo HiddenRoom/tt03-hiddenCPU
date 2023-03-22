@@ -44,10 +44,10 @@ module alu
 
   twoFourDecode opcodeDecoder(.sel(opcode), .enable(enable));
 
-  assign {addIn0, addIn1} = {dIn0, dIn1};
-  assign {subIn0, subIn1} = {dIn0, dIn1};
-  assign {xorIn0, xorIn1} = {dIn0, dIn1};
-  assign movIn0 = dIn1;
+  assign {addIn0, addIn1} = {dIn0, dIn1} & {16{enable[0]}};
+  assign {subIn0, subIn1} = {dIn0, dIn1} & {16{enable[1]}};
+  assign {xorIn0, xorIn1} = {dIn0, dIn1} & {16{enable[2]}};
+  assign movIn0 = dIn1 & {8{enable[3]}};
 
   or(carryEnable, enable[0], enable[1]);
 

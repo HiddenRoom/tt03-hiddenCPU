@@ -93,14 +93,6 @@ module HiddenRoom_HiddenCPU
       r1 <= 8'b00000001;
       r2 <= 8'b00000010;
       r3 <= 8'b00000011;
-
-      for(i = 0; i < 4096; i = i + 4)
-      begin
-        internalRAM[i] <= 8'b00000000;
-        internalRAM[i + 1] <= 8'b00000000;
-        internalRAM[i + 2] <= 8'b00000000;
-        internalRAM[i + 3] <= 8'b00000000;
-      end
     end 
     else
     begin

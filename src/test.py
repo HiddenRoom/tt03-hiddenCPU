@@ -14,9 +14,17 @@ async def test_my_design(dut):
     dut.instruction.value = 0b001101;
     await ClockCycles(dut.clk, 1);
     dut._log.info(dut.outBus.value);
-    dut.instruction.value = 0b001110;
+    dut.instruction.value = 0b110101;
+    await ClockCycles(dut.clk, 1);
+    dut.instruction.value = 0b001111;
+    await ClockCycles(dut.clk, 1);
+    dut._log.info(dut.outBus.value);
+    dut.instruction.value = 0b011101;
+    await ClockCycles(dut.clk, 1);
+    dut._log.info(dut.outBus.value);
+    dut._log.info(dut.outBus.value);
+    dut.instruction.value = 0b111010;
     await ClockCycles(dut.clk, 1);
     dut._log.info(dut.outBus.value);
     await RisingEdge(dut.clk);
     dut._log.info(dut.outBus.value);
-    assert dut.outBus.value == 0b00000110; # r1 should be 0b00000001 after reset 

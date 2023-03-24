@@ -18,7 +18,7 @@ module HiddenRoom_HiddenCPU
   assign clk = io_in[0];
   assign rst = io_in[1];
 
-  reg [7:0] internalRAM [0:15];
+  reg [7:0] internalRAM [7:0];
 
   wire [7:0] dIn0;
   wire [7:0] dIn1;
@@ -102,11 +102,11 @@ module HiddenRoom_HiddenCPU
       end
       else if(memWrite)
       begin
-        internalRAM[{r1, r2}] <= r3;
+        internalRAM[r2] <= r3;
       end
       else if(memRead)
       begin
-        r3 <= internalRAM[{r1, r2}];
+        r3 <= internalRAM[r2];
       end
       else if((carryFlag & bcf))
       begin

@@ -31,6 +31,35 @@ async def test_my_design(dut):
     dut.instruction.value = 0b111010;
     await ClockCycles(dut.clk, 1);
     dut._log.info(dut.outBus.value);
+    dut.instruction.value = 0b001011; # r2 + r3 = 5
+    await ClockCycles(dut.clk, 1);
+    assert dut.outBus.value == 0b00000011; # r3 will be written to the state it had before being added to
+    dut._log.info(dut.outBus.value);
+    dut.instruction.value = 0b001011; # r2 + r3 = 8
+    await ClockCycles(dut.clk, 1);
+    dut._log.info(dut.outBus.value);
+    dut.instruction.value = 0b101110; # r3 ^ r2 = 0b00001000 ^ 0b00000011 = 0b00001011
+    await ClockCycles(dut.clk, 1);
+    dut._log.info(dut.outBus.value);
+    dut.instruction.value = 0b001111;
+    await ClockCycles(dut.clk, 1);
+    dut._log.info(dut.outBus.value);
+    assert dut.outBus.value == 0b00001011;
+    dut.instruction.value = 0b001111;
+    await ClockCycles(dut.clk, 1);
+    dut._log.info(dut.outBus.value);
+    dut.instruction.value = 0b111111; # swap output to pc which will be 13 since that many instructions - 1 have been run since reset
+    await ClockCycles(dut.clk, 1);
+    dut._log.info(dut.outBus.value);
+    dut.instruction.value = 0b111111;
+    await ClockCycles(dut.clk, 1);
+    dut._log.info(dut.outBus.value);
+    assert dut.outBus.value == 0b00001101;
     await RisingEdge(dut.clk);
     dut._log.info(dut.outBus.value);
-    assert dut.outBus.value == 0b00000011; # r3 will be written to the state it had before being added to
+    assert dut.outBus.value == 0b00101100; # swap back
+    '''
+    TODO
+    
+    add test of mov instruction 
+    '''

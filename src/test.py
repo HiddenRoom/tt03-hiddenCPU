@@ -65,3 +65,11 @@ async def test_my_design(dut):
     await RisingEdge(dut.clk);
     dut._log.info(dut.outBus.value);
     assert dut.outBus.value == 0b00000000; # should be zero after moving r2 into r3 after zeroing r2
+
+    '''
+    TODO
+
+    add test of conditional branching based on carry
+    add overflow on addition
+    add underflow on subtraction
+    '''

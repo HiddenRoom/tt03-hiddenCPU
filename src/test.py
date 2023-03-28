@@ -55,11 +55,13 @@ async def test_my_design(dut):
     await ClockCycles(dut.clk, 1);
     dut._log.info(dut.outBus.value);
     assert dut.outBus.value == 0b00001101;
-    await RisingEdge(dut.clk);
+    dut.instruction.value = 0b011010; # r2 - r2 = 0
+    await ClockCycles(dut.clk, 1);
     dut._log.info(dut.outBus.value);
     assert dut.outBus.value == 0b00101100; # swap back
-    '''
-    TODO
-    
-    add test of mov instruction 
-    '''
+    dut.instruction.value = 0b111110; # mov r3, r2
+    await ClockCycles(dut.clk, 1);
+    dut._log.info(dut.outBus.value);
+    await RisingEdge(dut.clk);
+    dut._log.info(dut.outBus.value);
+    assert dut.outBus.value == 0b00000000; # should be zero after moving r2 into r3 after zeroing r2

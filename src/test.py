@@ -62,14 +62,52 @@ async def test_my_design(dut):
     dut.instruction.value = 0b111110; # mov r3, r2
     await ClockCycles(dut.clk, 1);
     dut._log.info(dut.outBus.value);
-    await RisingEdge(dut.clk);
+    dut.instruction.value = 0b111101; # mov r3, r1  r3 = 1
+    await ClockCycles(dut.clk, 1);
     dut._log.info(dut.outBus.value);
     assert dut.outBus.value == 0b00000000; # should be zero after moving r2 into r3 after zeroing r2
+    dut.rst.value = 1;
+    await ClockCycles(dut.clk, 1);
+    dut.rst.value = 0;
+    dut.instruction.value = 0b000101; # doubling r1, r1 = 2
+    await ClockCycles(dut.clk, 1);
+    dut._log.info(dut.outBus.value);
+    dut.instruction.value = 0b000101; # doubling r1, r1 = 4
+    await ClockCycles(dut.clk, 1);
+    dut._log.info(dut.outBus.value);
+    dut.instruction.value = 0b000101; # doubling r1, r1 = 8
+    await ClockCycles(dut.clk, 1);
+    dut._log.info(dut.outBus.value);
+    dut.instruction.value = 0b000101; # doubling r1, r1 = 16
+    await ClockCycles(dut.clk, 1);
+    dut._log.info(dut.outBus.value);
+    dut.instruction.value = 0b000101; # doubling r1, r1 = 32
+    await ClockCycles(dut.clk, 1);
+    dut._log.info(dut.outBus.value);
+    dut.instruction.value = 0b000101; # doubling r1, r1 = 64
+    await ClockCycles(dut.clk, 1);
+    dut._log.info(dut.outBus.value);
+    dut.instruction.value = 0b000101; # doubling r1, r1 = 128
+    await ClockCycles(dut.clk, 1);
+    dut._log.info(dut.outBus.value);
+    dut.instruction.value = 0b000101; # doubling r1, r1 = 256
+    await ClockCycles(dut.clk, 1);
+    dut._log.info(dut.outBus.value);
+    dut.instruction.value = 0b000101; # doubling r1, OVERFLOW r1 = 0, carryFlag = 1, pc = 10
+    await ClockCycles(dut.clk, 1);
+    dut._log.info(dut.outBus.value);
+    dut.instruction.value = 0b111111; # swap output to pc, pc = 11
+    await ClockCycles(dut.clk, 1);
+    dut._log.info(dut.outBus.value);
+    dut.instruction.value = 0b110000; # adding to r3 to pc since carryFlag is high, pc = 10 + 3 + 1 = 14
+    await ClockCycles(dut.clk, 1);
+    dut._log.info(dut.outBus.value);
+    await RisingEdge(dut.clk);
+    dut._log.info(dut.outBus.value);
+    assert dut.outBus.value == 0b00001110;
 
     '''
     TODO
 
     add test of conditional branching based on carry
-    add overflow on addition
-    add underflow on subtraction
     '''

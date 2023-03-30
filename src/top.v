@@ -87,6 +87,8 @@ module HiddenRoom_HiddenCPU
     begin
       pc <= 8'b00000000;
 
+      carryFlag = 1'b0;
+
       selOut <= 1'b0;
 
       r0 <= 8'b00000000;

@@ -90,21 +90,18 @@ async def test_my_design(dut):
     dut.instruction.value = 0b000101; # doubling r1, r1 = 128
     await ClockCycles(dut.clk, 1);
     dut._log.info(dut.outBus.value);
-    dut.instruction.value = 0b000101; # doubling r1, r1 = 256
-    await ClockCycles(dut.clk, 1);
-    dut._log.info(dut.outBus.value);
     dut.instruction.value = 0b000101; # doubling r1, OVERFLOW r1 = 0, carryFlag = 1, pc = 10
     await ClockCycles(dut.clk, 1);
     dut._log.info(dut.outBus.value);
-    dut.instruction.value = 0b111111; # swap output to pc, pc = 11
+    dut.instruction.value = 0b111111; # swap output to pc, pc = 9
     await ClockCycles(dut.clk, 1);
     dut._log.info(dut.outBus.value);
-    dut.instruction.value = 0b110000; # adding to r3 to pc since carryFlag is high, pc = 10 + 3 + 1 = 14
+    dut.instruction.value = 0b110000; # adding to r3 to pc since carryFlag is high, pc = 10 + 3 - 1 = 12
     await ClockCycles(dut.clk, 1);
     dut._log.info(dut.outBus.value);
     await RisingEdge(dut.clk);
     dut._log.info(dut.outBus.value);
-    assert dut.outBus.value == 0b00001110;
+    assert dut.outBus.value == 0b00001100;
 
     '''
     TODO

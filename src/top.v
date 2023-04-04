@@ -104,11 +104,11 @@ module HiddenRoom_HiddenCPU
       end
       else if(memWrite)
       begin
-        internalRAM[{r1[1:0], r2}] <= r3;
+        internalRAM[r2] <= r3;
       end
       else if(memRead)
       begin
-        r3 <= internalRAM[{r1[1:0], r2}];
+        r3 <= internalRAM[r2];
       end
       else if(carryFlag & bcf)
       begin

@@ -11,6 +11,8 @@ module HiddenRoom_HiddenCPU
   output [7:0] io_out
 );
 
+  integer i;
+
   wire clk, rst;
 
   assign clk = io_in[0];
@@ -95,6 +97,11 @@ module HiddenRoom_HiddenCPU
       r1 <= 8'b00000001;
       r2 <= 8'b00000010;
       r3 <= 8'b00000011;
+
+      for(i = 0; i < 256; i = i + 1)
+      begin
+        internalRAM[i] <= 8'b00000000;
+      end
     end 
     else
     begin

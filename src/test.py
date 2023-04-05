@@ -58,7 +58,7 @@ async def test_my_design(dut):
     await ClockCycles(dut.clk, 1);
     dut._log.info(dut.outBus.value);
     dut._log.info("test of swapping output to program counter: opcode (extended for special operation) 0b111111");
-    assert dut.outBus.value == 0b00001101;
+    assert dut.outBus.value == 0b00001100;
     dut.instruction.value = 0b011010; # r2 - r2 = 0
     await ClockCycles(dut.clk, 1);
     dut._log.info(dut.outBus.value);

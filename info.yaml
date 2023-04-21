@@ -31,10 +31,28 @@ documentation:
 
 # Longer description of how the project works. You can use standard markdown format.
   how_it_works: |
-      Uses a set of registers to divide the clock, and then some combinational logic
-      to convert from binary to decimal for the display.
+      Each instruction is executed in one clock cycle.
 
-      Puts a slower square wave output on output 7.
+      Instructions are inputed on io_in[2:7].
+
+  instruction_format: |
+      io_in[2:3] = opcode (00 add, 01 sub, 10 xor, 11 mov or special operations)
+      io_in[4:5] = result reg address
+      io_in[6:7] = operand reg address
+
+  Special operations are executed when the register address in a mov instruction are the same. These would normally acts as a nop but are instead repurposed as follows
+      register address    special operation
+      00                  add r3 to pc if 
+                          carryflag is high
+
+      01                  memWrite r3 into
+                          address r2
+
+      10                  memRead address r2
+                          into r3
+
+      11                  swap output between
+                          pc and r3
 
 # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
   how_to_test:  |
@@ -52,14 +70,14 @@ documentation:
     - non result operand reg address bit one
 # A description of what the outputs do
   outputs:
-    - bit zero of hardwired output reg number at address 11b
-    - bit one of hardwired output reg number at address 11b
-    - bit two of hardwired output reg number at address 11b
-    - bit three of hardwired output reg number at address 11b
-    - bit four of hardwired output reg number at address 11b
-    - bit five of hardwired output reg number at address 11b
-    - bit six of hardwired output reg number at address 11b
-    - bit seven of hardwired output reg number at address 11b
+    - bit zero of hardwired output reg number at address 11b or pc 
+    - bit one of hardwired output reg number at address 11b or pc 
+    - bit two of hardwired output reg number at address 11b or pc 
+    - bit three of hardwired output reg number at address 11b or pc 
+    - bit four of hardwired output reg number at address 11b or pc 
+    - bit five of hardwired output reg number at address 11b or pc 
+    - bit six of hardwired output reg number at address 11b or pc 
+    - bit seven of hardwired output reg number at address 11b or pc 
 
 # The following fields are optional
   tag:          "risc, microprocessor, alu"      # comma separated list of tags: test encryption, experiment, clock, animation, utility, industrial, pwm, fpga, alu, microprocessor, risc, riscv, sensor, signal generator, fft, filter, music, bcd, sound, serial, timer, random number generator, calculator, decoder, counter, puzzle, multiplier, game, oscillator,

@@ -40,7 +40,7 @@ documentation:
       io_in[4:5] = result reg address
       io_in[6:7] = operand reg address
 
-  Special operations are executed when the register address in a mov instruction are the same. These would normally acts as a nop but are instead repurposed as follows
+      Special operations are executed when the register address in a mov instruction are the same. These would normally acts as a nop but are instead repurposed as follows
       register address    special operation
       00                  add r3 to pc if 
                           carryflag is high

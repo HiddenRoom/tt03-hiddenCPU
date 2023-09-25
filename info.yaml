@@ -37,8 +37,8 @@ documentation:
 
   instruction_format: |
       io_in[2:3] = opcode (00 add, 01 sub, 10 xor, 11 mov or special operations)
-      io_in[4:5] = result reg address
-      io_in[6:7] = operand reg address
+      io_in[4:5] = result reg addr
+      io_in[6:7] = operand reg addr
 
       Special operations are executed when the register address in a mov instruction are the same. These would normally acts as a nop but are instead repurposed as follows
       register address    special operation

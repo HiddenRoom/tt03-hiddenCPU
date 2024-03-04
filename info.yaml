@@ -34,9 +34,8 @@ documentation:
       Each instruction is executed in one clock cycle.
 
       Instructions are inputed on io_in[2:7].
-
-  instruction_format: |
-      io_in[2:3] = opcode (00 add, 01 sub, 10 xor, 11 mov or special operations)
+      
+      io_in[2:3] = opcode (00 add, 01 sub, 10 xor, 11 mov or special operations (explained below))
       io_in[4:5] = result reg addr
       io_in[6:7] = operand reg addr
 

@@ -61,12 +61,12 @@ documentation:
   inputs:               
     - clock
     - reset
-    - opcode bit zero
-    - opcode bit one
-    - result reg address bit zero
-    - result reg address bit one
-    - non result operand reg address bit zero
-    - non result operand reg address bit one
+    - opcode[0]
+    - opcode[1]
+    - destination reg address[0]
+    - destination reg address[1]
+    - non result operand reg address[0]
+    - non result operand reg address[1]
 # A description of what the outputs do
   outputs:
     - bit zero of hardwired output reg number at address 11b or pc 
